@@ -1,0 +1,100 @@
+WITH total_enrollments AS (
+	SELECT state, SUM(enroll) AS state_enroll
+	FROM da_david.finance_districts
+	GRoUP BY state
+)
+SELECT te.state
+	, e15.ampkm
+	, te.state_enroll
+FROM da_david.enroll_2015 e15
+JOIN total_enrollments te ON te.state = e15.state
+LIMIT 100;
+
+WITH all_years_race AS
+(
+SELECT survyear, state, am, asian, hisp, black, white
+FROM da_david.enroll_1992
+UNION
+SELECT survyear, state, am, asian, hisp, black, white
+FROM da_david.enroll_1993
+UNION
+SELECT survyear, state, am, asian, hisp, black, white
+FROM da_david.enroll_1994
+UNION
+SELECT survyear, state, am, asian, hisp, black, white
+FROM da_david.enroll_1995
+UNION
+SELECT survyear, state, am, asian, hisp, black, white
+FROM da_david.enroll_1996
+UNION
+SELECT survyear, state, am, asian, hisp, black, white
+FROM da_david.enroll_1997
+UNION
+SELECT survyear, state, am, asian, hisp, black, white
+FROM da_david.enroll_1998
+UNION
+SELECT survyear, state, am, asian, hisp, black, white
+FROM da_david.enroll_1999
+UNION
+SELECT survyear, state, am, asian, hisp, black, white
+FROM da_david.enroll_2000
+UNION
+SELECT survyear, state, am, asian, hisp, black, white
+FROM da_david.enroll_2001
+UNION
+SELECT survyear, state, am, asian, hisp, black, white
+FROM da_david.enroll_2002
+UNION
+SELECT survyear, state, am, asian, hisp, black, white
+FROM da_david.enroll_2003
+UNION
+SELECT survyear, state, am, asian, hisp, black, white
+FROM da_david.enroll_2004
+UNION
+SELECT survyear, state, am, asian, hisp, black, white
+FROM da_david.enroll_2005
+UNION
+SELECT survyear, state, am, asian, hisp, black, white
+FROM da_david.enroll_2006
+UNION
+SELECT survyear, state, am, asian, hisp, black, white
+FROM da_david.enroll_2007
+UNION
+SELECT survyear, state, am, asian, hisp, black, white
+FROM da_david.enroll_2008
+UNION
+SELECT survyear, state, am, asian, hisp, black, white
+FROM da_david.enroll_2009
+UNION
+SELECT survyear, state, am, asian, hisp, black, white
+FROM da_david.enroll_2010
+UNION
+SELECT survyear, state, am, asian, hisp, black, white
+FROM da_david.enroll_2011
+UNION
+SELECT survyear, state, am, asian, hi AS hisp, bl AS black, wh AS white
+FROM da_david.enroll_2012
+UNION
+SELECT survyear, state, am, asian, hi AS hisp, bl AS black, wh AS white
+FROM da_david.enroll_2013
+UNION
+SELECT survyear, state, am, asian, hisp, black, white
+FROM da_david.enroll_2014
+UNION
+SELECT survyear, state, am, asian, hi AS hisp, bl AS black, wh AS white
+FROM da_david.enroll_2015
+)
+
+SELECT survyear
+	, UPPER(ayr.state) AS state
+	, SUM(sta.enroll) AS total_enrollment
+	, SUM(ayr.am) AS sum_american
+	, SUM(ayr.asian) AS sum_asian
+	, SUM(ayr.hisp) AS sum_hisp
+	, SUM(ayr.black) AS sum_black
+	, SUM(ayr.white) AS sum_white
+FROM da_david.states_all sta
+RIGHT JOIN all_years_race ayr ON sta.state = ayr.state
+WHERE ayr.survyear BETWEEN '2004' AND '2015'
+GROUP BY ayr.survyear, ayr.state, sta.enroll
+ORDER BY ayr.survyear, ayr.state;
