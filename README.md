@@ -1,4 +1,4 @@
-# final_project
+# Galvanize Data Analytics Boulder Spring 2019 Final Project README
 
 | Tableau Links: |
 | --- |
